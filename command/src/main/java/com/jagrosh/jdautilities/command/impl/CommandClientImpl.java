@@ -166,7 +166,7 @@ public class CommandClientImpl implements CommandClient, EventListener
                 }
                 event.replyInDm(builder.toString(), unused ->
                 {
-                    if(event.isFromType(ChannelType.TEXT))
+                    if(!event.isFromType(ChannelType.PRIVATE))
                         event.reactSuccess();
                 }, t -> event.replyWarning("Help cannot be sent because you are blocking Direct Messages."));
         } : helpConsumer;
@@ -493,7 +493,7 @@ public class CommandClientImpl implements CommandClient, EventListener
         String[] parts = null;
         String rawContent = event.getMessage().getContentRaw();
 
-        GuildSettingsProvider settings = event.isFromType(ChannelType.TEXT)? provideSettings(event.getGuild()) : null;
+        GuildSettingsProvider settings = !event.isFromType(ChannelType.PRIVATE)? provideSettings(event.getGuild()) : null;
 
         // Check for prefix or alternate prefix (@mention cases)
         if(prefix.equals(DEFAULT_PREFIX) || (altprefix != null && altprefix.equals(DEFAULT_PREFIX)))

@@ -222,7 +222,7 @@ public abstract class Command
         }
 
         // is allowed check
-        if(event.isFromType(ChannelType.TEXT) && !isAllowed(event.getTextChannel()))
+        if(!event.isFromType(ChannelType.PRIVATE) && !isAllowed(event.getTextChannel()))
         {
             terminate(event, "That command cannot be used in this channel!");
             return;
@@ -230,14 +230,14 @@ public abstract class Command
         
         // required role check
         if(requiredRole!=null)
-            if(!event.isFromType(ChannelType.TEXT) || event.getMember().getRoles().stream().noneMatch(r -> r.getName().equalsIgnoreCase(requiredRole)))
+            if(!event.isFromType(ChannelType.PRIVATE) || event.getMember().getRoles().stream().noneMatch(r -> r.getName().equalsIgnoreCase(requiredRole)))
             {
                 terminate(event, event.getClient().getError()+" You must have a role called `"+requiredRole+"` to use that!");
                 return;
             }
         
         // availability check
-        if(event.getChannelType()==ChannelType.TEXT)
+        if(event.getChannelType()!=ChannelType.PRIVATE)
         {
             // bot perms
             for(Permission p: botPermissions)

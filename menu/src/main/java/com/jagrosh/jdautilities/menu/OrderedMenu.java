@@ -110,7 +110,7 @@ public class OrderedMenu extends Menu
         // Is from text channel
         // Does not allow typed input
         // Does not have permission to add reactions
-        if(channel.getType()==ChannelType.TEXT
+        if(channel.getType()!=ChannelType.PRIVATE
                 && !allowTypedInput
                 && !((TextChannel)channel).getGuild().getSelfMember().hasPermission((TextChannel) channel, Permission.MESSAGE_ADD_REACTION))
             throw new PermissionException("Must be able to add reactions if not allowing typed input!");
@@ -140,7 +140,7 @@ public class OrderedMenu extends Menu
         // Is from text channel
         // Does not allow typed input
         // Does not have permission to add reactions
-        if(message.getChannelType() == ChannelType.TEXT
+        if(message.getChannelType() != ChannelType.PRIVATE
                 && !allowTypedInput 
                 && !message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_ADD_REACTION))
             throw new PermissionException("Must be able to add reactions if not allowing typed input!");
