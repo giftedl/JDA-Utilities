@@ -264,7 +264,7 @@ public abstract class Command
                     }
                     else
                     {
-                        if(!event.getSelfMember().hasPermission(event.getTextChannel(), p))
+                        if(!event.getSelfMember().hasPermission((GuildChannel) event.getChannel(), p))
                         {
                             terminate(event, String.format(BOT_PERM, event.getClient().getError(), p.getName(), "Channel"));
                             return;
