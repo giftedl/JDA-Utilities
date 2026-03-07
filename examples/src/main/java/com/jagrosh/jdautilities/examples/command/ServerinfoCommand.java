@@ -75,6 +75,6 @@ public class ServerinfoCommand extends Command
             builder.setThumbnail(guild.getIconUrl());
         builder.setColor(owner == null ? null : owner.getColor());
         builder.setDescription(str);
-        event.reply(new MessageBuilder().append(title).setEmbed(builder.build()).build());
+        event.reply(new MessageBuilder().append(title).setEmbeds(builder.build()).build());
     }
 }
