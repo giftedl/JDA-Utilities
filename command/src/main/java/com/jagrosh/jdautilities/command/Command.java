@@ -20,10 +20,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 
 /**
  * <h1><b>Commands In JDA-Utilities</b></h1>
@@ -187,6 +184,7 @@ public abstract class Command
      */
     public final void run(CommandEvent event)
     {
+        System.out.println("9");
         // child check
         if(!event.getArgs().isEmpty())
         {
@@ -206,6 +204,7 @@ public abstract class Command
                 }
             }
         }
+        System.out.println("10");
         
         // owner check
         if(ownerCommand && !(event.isOwner()))
@@ -220,13 +219,15 @@ public abstract class Command
             terminate(event, category.getFailureResponse());
             return;
         }
+        System.out.println("11");
 
         // is allowed check
-        if(!event.isFromType(ChannelType.PRIVATE) && !isAllowed(event.getTextChannel()))
+        if(!event.isFromType(ChannelType.PRIVATE) && !isAllowed(event.getChannel()))
         {
             terminate(event, "That command cannot be used in this channel!");
             return;
         }
+        System.out.println("12");
         
         // required role check
         if(requiredRole!=null)
@@ -235,7 +236,8 @@ public abstract class Command
                 terminate(event, event.getClient().getError()+" You must have a role called `"+requiredRole+"` to use that!");
                 return;
             }
-        
+
+        System.out.println("13");
         // availability check
         if(event.getChannelType()!=ChannelType.PRIVATE)
         {
@@ -246,6 +248,7 @@ public abstract class Command
                 {
                     if(p.name().startsWith("VOICE"))
                     {
+                        System.out.println("14");
                         GuildVoiceState gvc = event.getMember().getVoiceState();
                         VoiceChannel vc = gvc == null ? null : (VoiceChannel) gvc.getChannel();
                         if(vc==null)
@@ -372,30 +375,36 @@ public abstract class Command
      * @return {@code true} if the channel topic doesn't specify any topic-tags that would cause this command
      *         to be cancelled, or if {@code usesTopicTags} has been set to {@code false}.
      */
-    public boolean isAllowed(TextChannel channel)
+    public boolean isAllowed(Channel channel)
     {
         if(!usesTopicTags)
             return true;
+        if (channel.getType() != ChannelType.TEXT)
+            return true;
         if(channel==null)
             return true;
-        String topic = channel.getTopic();
-        if(topic==null || topic.isEmpty())
-            return true;
-        topic = topic.toLowerCase();
-        String lowerName = name.toLowerCase();
-        if(topic.contains("{"+lowerName+"}"))
-            return true;
-        if(topic.contains("{-"+lowerName+"}"))
-            return false;
-        String lowerCat = category==null ? null : category.getName().toLowerCase();
-        if(lowerCat!=null)
-        {
-            if(topic.contains("{"+lowerCat+"}"))
+        if (channel.getType() == ChannelType.TEXT) {
+            String topic = ((TextChannel) channel).getTopic();
+
+            if(topic==null || topic.isEmpty())
                 return true;
-            if(topic.contains("{-"+lowerCat+"}"))
+            topic = topic.toLowerCase();
+            String lowerName = name.toLowerCase();
+            if(topic.contains("{"+lowerName+"}"))
+                return true;
+            if(topic.contains("{-"+lowerName+"}"))
                 return false;
+            String lowerCat = category==null ? null : category.getName().toLowerCase();
+            if(lowerCat!=null)
+            {
+                if(topic.contains("{"+lowerCat+"}"))
+                    return true;
+                if(topic.contains("{-"+lowerCat+"}"))
+                    return false;
+            }
+            return !topic.contains("{-all}");
         }
-        return !topic.contains("{-all}");
+        return true;
     }
 
     /**
