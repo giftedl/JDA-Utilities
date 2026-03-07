@@ -307,6 +307,7 @@ public abstract class Command
             terminate(event, event.getClient().getError()+" This command cannot be used in Direct messages");
             return;
         }
+        System.out.println("15");
         
         //cooldown check
         if(cooldown>0)
@@ -320,7 +321,8 @@ public abstract class Command
             }
             else event.getClient().applyCooldown(key, cooldown);
         }
-        
+
+        System.out.println("16");
         // run
         try {
             execute(event);
@@ -333,6 +335,7 @@ public abstract class Command
             // otherwise we rethrow
             throw t;
         }
+        System.out.println("17");
 
         if(event.getClient().getListener() != null)
             event.getClient().getListener().onCompletedCommand(event, this);
