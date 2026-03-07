@@ -486,6 +486,7 @@ public class CommandClientImpl implements CommandClient, EventListener
 
     private void onMessageReceived(MessageReceivedEvent event)
     {
+        System.out.println("JDA Utils gained message " + event.getMessage());
         // Return if it's a bot
         if(event.getAuthor().isBot())
             return;
