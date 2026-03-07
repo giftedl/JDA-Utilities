@@ -495,6 +495,7 @@ public class CommandClientImpl implements CommandClient, EventListener
         String rawContent = event.getMessage().getContentRaw();
 
         GuildSettingsProvider settings = !event.isFromType(ChannelType.PRIVATE)? provideSettings(event.getGuild()) : null;
+        System.out.println("1");
 
         // Check for prefix or alternate prefix (@mention cases)
         if(prefix.equals(DEFAULT_PREFIX) || (altprefix != null && altprefix.equals(DEFAULT_PREFIX)))
@@ -505,12 +506,14 @@ public class CommandClientImpl implements CommandClient, EventListener
                 parts = splitOnPrefixLength(rawContent, rawContent.indexOf(">") + 1);
             }
         }
+        System.out.println("2");
         // Check for prefix
         if(parts == null && rawContent.toLowerCase().startsWith(prefix.toLowerCase()))
             parts = splitOnPrefixLength(rawContent, prefix.length());
         // Check for alternate prefix
         if(parts == null && altprefix != null && rawContent.toLowerCase().startsWith(altprefix.toLowerCase()))
             parts = splitOnPrefixLength(rawContent, altprefix.length());
+        System.out.println("3");
         // Check for guild specific prefixes
         if(parts == null && settings != null)
         {
@@ -524,14 +527,17 @@ public class CommandClientImpl implements CommandClient, EventListener
                 }
             }
         }
+        System.out.println("4");
 
         if(parts!=null) //starts with valid prefix
         {
+            System.out.println("5");
             if(useHelp && parts[0].equalsIgnoreCase(helpWord))
             {
                 CommandEvent cevent = new CommandEvent(event, parts[1]==null ? "" : parts[1], this);
                 if(listener!=null)
                     listener.onCommand(cevent, null);
+                System.out.println("6");
                 helpConsumer.accept(cevent); // Fire help consumer
                 if(listener!=null)
                     listener.onCompletedCommand(cevent, null);
@@ -541,6 +547,7 @@ public class CommandClientImpl implements CommandClient, EventListener
             {
                 String name = parts[0];
                 String args = parts[1]==null ? "" : parts[1];
+                System.out.println("7");
                 final Command command; // this will be null if it's not a command
                 synchronized(commandIndex)
                 {
@@ -555,6 +562,8 @@ public class CommandClientImpl implements CommandClient, EventListener
                     if(listener != null)
                         listener.onCommand(cevent, command);
                     uses.put(command.getName(), uses.getOrDefault(command.getName(), 0) + 1);
+
+                    System.out.println("8");
                     command.run(cevent);
                     return; // Command is done
                 }
