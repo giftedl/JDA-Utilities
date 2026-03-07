@@ -210,7 +210,7 @@ public class CommandEvent
     public void reply(MessageEmbed embed)
     {
         event.getChannel().sendMessageEmbeds(embed).queue(m -> {
-            if(event.isFromType(ChannelType.TEXT))
+            if(!event.isFromType(ChannelType.PRIVATE))
                 linkId(m);
         });
     }
@@ -232,7 +232,7 @@ public class CommandEvent
     public void reply(MessageEmbed embed, Consumer<Message> success)
     {
     	event.getChannel().sendMessageEmbeds(embed).queue(m -> {
-    	    if(event.isFromType(ChannelType.TEXT))
+    	    if(!event.isFromType(ChannelType.PRIVATE))
     	        linkId(m);
     	    success.accept(m);
         });
@@ -257,7 +257,7 @@ public class CommandEvent
     public void reply(MessageEmbed embed, Consumer<Message> success, Consumer<Throwable> failure)
     {
         event.getChannel().sendMessageEmbeds(embed).queue(m -> {
-            if(event.isFromType(ChannelType.TEXT))
+            if(!event.isFromType(ChannelType.PRIVATE))
                 linkId(m);
             success.accept(m);
         }, failure);
@@ -276,7 +276,7 @@ public class CommandEvent
     public void reply(Message message)
     {
         event.getChannel().sendMessage(message).queue(m -> {
-            if(event.isFromType(ChannelType.TEXT))
+            if(!event.isFromType(ChannelType.PRIVATE))
                 linkId(m);
         });
     }
@@ -298,7 +298,7 @@ public class CommandEvent
     public void reply(Message message, Consumer<Message> success)
     {
         event.getChannel().sendMessage(message).queue(m -> {
-            if(event.isFromType(ChannelType.TEXT))
+            if(!event.isFromType(ChannelType.PRIVATE))
                 linkId(m);
             success.accept(m);
         });
@@ -323,7 +323,7 @@ public class CommandEvent
     public void reply(Message message, Consumer<Message> success, Consumer<Throwable> failure)
     {
         event.getChannel().sendMessage(message).queue(m -> {
-            if(event.isFromType(ChannelType.TEXT))
+            if(!event.isFromType(ChannelType.PRIVATE))
                 linkId(m);
             success.accept(m);
         }, failure);
@@ -918,7 +918,7 @@ public class CommandEvent
         for(int i=0; i<MAX_MESSAGES && i<messages.size(); i++)
         {
             chan.sendMessage(messages.get(i)).queue(m -> {
-                if(event.isFromType(ChannelType.TEXT))
+                if(!event.isFromType(ChannelType.PRIVATE))
                     linkId(m);
             });
         }
@@ -932,7 +932,7 @@ public class CommandEvent
             if(i+1==MAX_MESSAGES || i+1==messages.size())
             {
                 chan.sendMessage(messages.get(i)).queue(m -> {
-                    if(event.isFromType(ChannelType.TEXT))
+                    if(!event.isFromType(ChannelType.PRIVATE))
                         linkId(m);
                     success.accept(m);
                 });
@@ -940,7 +940,7 @@ public class CommandEvent
             else
             {
                 chan.sendMessage(messages.get(i)).queue(m -> {
-                    if(event.isFromType(ChannelType.TEXT))
+                    if(!event.isFromType(ChannelType.PRIVATE))
                         linkId(m);
                 });
             }
@@ -955,7 +955,7 @@ public class CommandEvent
             if(i + 1 == MAX_MESSAGES || i + 1 == messages.size())
             {
                 chan.sendMessage(messages.get(i)).queue(m -> {
-                    if(event.isFromType(ChannelType.TEXT))
+                    if(!event.isFromType(ChannelType.PRIVATE))
                         linkId(m);
                     success.accept(m);
                 }, failure);
@@ -963,7 +963,7 @@ public class CommandEvent
             else
             {
                 chan.sendMessage(messages.get(i)).queue(m -> {
-                    if(event.isFromType(ChannelType.TEXT))
+                    if(!event.isFromType(ChannelType.PRIVATE))
                         linkId(m);
                 });
             }
