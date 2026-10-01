@@ -515,7 +515,7 @@ public class CommandClientImpl implements CommandClient, EventListener
             parts = splitOnPrefixLength(rawContent, altprefix.length());
         System.out.println("3");
         // Check for guild specific prefixes
-        if(parts == null && settings != null)
+/*        if(parts == null && settings != null)
         {
             Collection<String> prefixes = settings.getPrefixes();
             if(prefixes != null)
@@ -526,7 +526,7 @@ public class CommandClientImpl implements CommandClient, EventListener
                         parts = splitOnPrefixLength(rawContent, prefix.length());
                 }
             }
-        }
+        }*/
         System.out.println("4");
 
         if(parts!=null) //starts with valid prefix
